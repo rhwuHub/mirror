@@ -1,0 +1,37 @@
+name: Pull and Push Docker Image to Aliyun
+
+on:
+  push:
+    branches:
+      - main  # 当 main 分支有代码推送时触发
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest  # 在 Ubuntu 最新版本上运行此工作流程
+
+    steps:
+      - name: pull target image
+        uses: actions/checkout@v4
+        # 检出代码，用于获取项目源代码
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Aliyun Docker registry
+        run: docker login --username=${{ secrets.ALIYUN_REGISTRY_USERNAME }} --password=${{ secrets.ALIYUN_REGISTRY_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
+        # 登录阿里云 Docker 镜像仓库，使用 GitHub secrets 中的用户名和密码
+
+      - name: Pull image from Docker Hub
+        run: docker pull kuschzzp/openoffice:4.1.13
+        # 从 Docker Hub 拉取镜像
+
+      - name: Tag image for Aliyun
+        run: docker tag kuschzzp/openoffice:4.1.13 registry.cn-hangzhou.aliyuncs.com/rhwu/hub:openoffice:4.1.13
+        # 为镜像打标签，以便推送到阿里云
+
+      - name: Push image to Aliyun
+        run: docker push registry.cn-hangzhou.aliyuncs.com/rhwu/hub:openoffice:4.1.13
+        # 推送镜像到阿里云
