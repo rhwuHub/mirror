@@ -29,9 +29,9 @@ jobs:
         # 从 Docker Hub 拉取镜像
 
       - name: Tag image for Aliyun
-        run: docker tag kuschzzp/openoffice:4.1.13 registry.cn-hangzhou.aliyuncs.com/rhwu/hub:openoffice:4.1.13
+        run: docker tag kuschzzp/openoffice:4.1.13 registry.cn-hangzhou.aliyuncs.com/rhwu/hub:openoffice-4.1.13
         # 为镜像打标签，以便推送到阿里云
 
       - name: Push image to Aliyun
-        run: docker push registry.cn-hangzhou.aliyuncs.com/rhwu/hub:openoffice:4.1.13
+        run: docker push registry.cn-hangzhou.aliyuncs.com/rhwu/hub:openoffice-4.1.13
         # 推送镜像到阿里云
